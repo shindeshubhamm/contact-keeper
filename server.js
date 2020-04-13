@@ -23,7 +23,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/contacts', contactsRoute)
 
 // Listen on port
-const PORT = process.env.PORT || 1337
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`server is running on port: ${PORT}`)
