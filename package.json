@@ -10,7 +10,8 @@
     "clientinstall": "npm install --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "database": "/home/shindeshubhamm/mongodb/bin/mongod --dbpath=/home/shindeshubhamm/mongodb-data",
-    "devDatabase": "npm run database"
+    "devDatabase": "npm run database",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
   "license": "ISC",
