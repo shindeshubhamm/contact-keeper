@@ -6,29 +6,29 @@ const jwt = require('jsonwebtoken')
 const UserSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Please fill all the required fields.'],
     trim: true
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Please fill all the required fields.'],
     unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
       if (!validator.isEmail(value)) {
-        throw new Error('Please enter a valid email id!')
+        throw new Error('Please enter a valid email id.')
       }
     }
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Please fill all the required fields.'],
     trim: true,
-    minlength: 6,
+    minlength: [6, 'Minimum 6 character password required.'],
     validate(value) {
       if (value.toLowerCase().includes('password')) {
-        throw new Error('Password should not be "password"')
+        throw new Error('Password should not contain "password"')
       }
     }
   },
@@ -54,7 +54,7 @@ UserSchema.statics.findByCredentials = async (email, password) => {
 
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
-    throw new Error({ error: 'Unable to login!' })
+    throw new Error('Unable to login!')
   }
   return user
 }
@@ -86,6 +86,16 @@ UserSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 8)
   }
   next()
+})
+
+UserSchema.post('save', (error, doc, next) => {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    return next(new Error('Email already taken!'))
+  }
+  const { email, name, password } = error
+  if (email || name || password) {
+    return next(new Error('Please enter all required fields.'))
+  }
 })
 
 const User = mongoose.model('user', UserSchema)

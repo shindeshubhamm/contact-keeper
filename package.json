@@ -8,7 +8,9 @@
     "server": "env-cmd --file='dev.env' nodemon server.js",
     "client": "BROWSER=none npm start --prefix client",
     "clientinstall": "npm install --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "database": "/home/shindeshubhamm/mongodb/bin/mongod --dbpath=/home/shindeshubhamm/mongodb-data",
+    "devDatabase": "npm run database"
   },
   "author": "",
   "license": "ISC",

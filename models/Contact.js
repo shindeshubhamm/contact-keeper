@@ -9,13 +9,13 @@ const ContactSchema = mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Please enter all required fields.'],
     trim: true
   },
   email: {
     type: String,
     trim: true,
-    required: true,
+    required: [true, 'Please enter all required fields.'],
     lowercase: true,
     validate(value) {
       if (!validator.isEmail(value)) {
@@ -24,12 +24,7 @@ const ContactSchema = mongoose.Schema({
     }
   },
   phone: {
-    type: Number,
-    // validate(value) {
-    //   if (!value.match(/([0-9]{10})/)) {
-    //     throw new Error('Please enter valid 10 digit number!')
-    //   }
-    // }
+    type: Number
   },
   type: {
     type: String,
@@ -38,6 +33,13 @@ const ContactSchema = mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  }
+})
+
+ContactSchema.post('save', (error, doc, next) => {
+  const { email, name } = error
+  if (email || name) {
+    return next(new Error('Please enter all fields correctly.'))
   }
 })
 
