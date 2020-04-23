@@ -10,7 +10,7 @@
 
 
 ### Usage:
-Add your environment variables in 'dev.env' file (in root directory):
+Add your environment variables in 'dev.env' file (in root directory of project):
 ```env
 PORT=Your_Express_Port
 MONGODB_URI=Your_MongoDB_URI
@@ -21,7 +21,7 @@ Install dependencies:
 
 ```bash
 npm install # Express dependencies
-npm client-install # React dependencies
+npm run clientinstall # React dependencies
 ```
 
 Run server:
